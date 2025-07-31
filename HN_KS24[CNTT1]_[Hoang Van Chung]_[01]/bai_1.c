@@ -29,7 +29,7 @@ void push(Stack *stack, Operation operation) {
     }
 }
 Operation pop (Stack *stack) {
-    if (stack->top>0) {
+    if (stack->top>=0) {
         return stack->data[stack->top--];
     }
     Operation nullop = {'N','\0'};
@@ -41,7 +41,7 @@ int isEmpty(Stack *stack) {
     return stack->top == -1;
 }
 void insertChar(char c) {
-    text[++length] = c;
+    text[length++] = c;
     text[length] = '\0';
     Operation operation = {'I',c};
     push(&undoStack,operation);
@@ -66,7 +66,7 @@ void redo() {
         if (operation.action == 'I') {
             text[length++] = operation.value;
             text[length] = '\0';
-            push(&redoStack,operation);
+            push(&undoStack,operation);
         }
     }
 }
@@ -92,19 +92,18 @@ int main() {
         switch(choice) {
             case 1:
                printf("nhap ky tu: ");
-                scanf("%s",&c);
+                getchar();
+                scanf("%c",&c);
                 insertChar(c);
                 break;
             case 2:
-                    undo();
+                undo();
                 break;
             case 3:
                 redo();
-
                 break;
             case 4:
                 display();
-
                 break;
             case 5:
                 printf("Ket thuc chuong trinh\n");
